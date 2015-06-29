@@ -1,6 +1,6 @@
-chmod 777 /tmp/
-mkdir /var/log/cdo
-chmod 777 /var/log/cdo/
+chmod 777 /tmp/;
+mkdir /var/log/cdo;
+chmod 777 /var/log/cdo/;
 
 edit check_device_online.py change domoticzserver into own ip
 
