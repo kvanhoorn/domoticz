@@ -10,9 +10,9 @@ Scripts for use on the Raspberry Pi in combination with Domoticz
 ## Check Device Online
 -----
 
-1. Create a folder an checkout  check_device_online.py
+1. #####Create a folder an checkout  check_device_online.py
 
-2. Run the next command on the Raspberry Pi: (command line)
+2. #####Run the next command on the Raspberry Pi: (command line)
  
  ```
  chmod 777 /tmp/;
@@ -22,14 +22,14 @@ Scripts for use on the Raspberry Pi in combination with Domoticz
  
  This creates a folder for the PID files.
 
-3. On Domoticz, create a dummy switch, and copy the IDx, for example 18
+3. #####On Domoticz, create a dummy switch, and copy the IDx, for example 18
 
-4. On the command line, edit the cronjobs:
+4. #####On the command line, edit the cronjobs:
  ```
  crontab -e
  ```
  
-5. Add the next row to the file:
+5. #####Add the next row to the file:
  ```
  * * * * * [path to script] [IP] [XID] [SECS] [OFFLINE_TRESHOLD] > /dev/null 2>&1
  ```
