@@ -10,7 +10,7 @@ Scripts for use on the Raspberry Pi in combination with Domoticz
 ## Check Device Online.py
 -----
 
-##### 1. Create a folder an checkout check_device_online.py
+##### 1. Create a folder and checkout check_device_online.py
 
 ##### 2. Run the next command on the Raspberry Pi: (command line)
  
@@ -34,7 +34,10 @@ Scripts for use on the Raspberry Pi in combination with Domoticz
  * * * * * [path to script] [IP] [XID] [SECS] [OFFLINE_TRESHOLD] > /dev/null 2>&1
  ```
 
-	For example
+
+  For example:
+
+	
 ```
 * * * * * /usr/bin/python /home/pi/domoticz/scripts/python/domoticz/check_device_online.py 192.168.1.200 18 10 60 > /dev/null 2>&1
 ```
