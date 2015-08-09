@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# PIN: 23  == GPIO4 (pin 16)
+# BCM GPIO 23 == PIN 16 == GPIO 4
 
 
 import time
