@@ -3,7 +3,7 @@
     ## LOCAL/FTP/SCP/MAIL PARAMETERS
     SERVER="IP_ADDRESS"         # IP of Network disk, used for: ftp mail scp
     USERNAME="USERNAME"                # FTP username of Network disk used for: ftp mail scp
-    PASSWORD="PASSWORD       # FTP password of Network disk used for: ftp mail scp
+    PASSWORD="PASSWORD"       # FTP password of Network disk used for: ftp mail scp
     DESTDIR="/opt/backup"        # used for: local
     DOMO_IP="DOMOTICZ_IP"       # Domoticz IP used for all
     DOMO_PORT="DOMOTICZ_PORT"             # Domoticz port used for all
