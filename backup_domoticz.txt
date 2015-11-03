@@ -1,0 +1,24 @@
+#!/bin/bash
+ 
+    ## LOCAL/FTP/SCP/MAIL PARAMETERS
+    SERVER="IP_ADDRESS"         # IP of Network disk, used for: ftp mail scp
+    USERNAME="USERNAME"                # FTP username of Network disk used for: ftp mail scp
+    PASSWORD="PASSWORD       # FTP password of Network disk used for: ftp mail scp
+    DESTDIR="/opt/backup"        # used for: local
+    DOMO_IP="DOMOTICZ_IP"       # Domoticz IP used for all
+    DOMO_PORT="DOMOTICZ_PORT"             # Domoticz port used for all
+    ## END OF USER CONFIGURABLE PARAMETERS
+ 
+    #TIMESTAMP=`/bin/date +%Y%m%d%H%M%S`
+    BACKUPFILE="/tmp/domoticz_master_backups.tar.gz" # Change the xxx to yours
+ 
+    ### Create backup and ZIP it
+    tar -zcvf $BACKUPFILE /home/pi/domoticz/backups   # Change the xxx to yours    # Or try /home/pi/domoticz/
+ 
+    ### Send to Network disk through SFTP
+    curl -s --disable-epsv -v -T"$BACKUPFILE" -u"$USERNAME:$PASSWORD" "sftp://$SERVER/media/USBHDD/data/Backups/"  # Change the ftp to yours !!!
+ 
+    ### Remove temp backup file
+    /bin/rm $BACKUPFILE
+ 
+    ### Done!
