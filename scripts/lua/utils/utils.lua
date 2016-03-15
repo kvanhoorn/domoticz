@@ -41,6 +41,14 @@ function time_difference(s)
    return difference
 end
 
+function get_now()
+   return os.date("%Y-%m-%d %H:%M:%S")
+end
+
+function timestamp_to_date(inp)
+    return os.date("%Y-%m-%d %H:%M:%S", inp)
+end
+
 -- split by given seperator
 function string:split(sep)
 

@@ -16,6 +16,7 @@ commandArray = {}
 
 -- no plant device default
 local triggerDevice = false
+local notifLock = 60 * 60 * 2 -- two hours lock
 
 -- search all changed devices
 for _c in pairs(c) do
@@ -40,7 +41,7 @@ if triggerDevice then
 
     for plant, vals in pairs(plants) do
     
-        if c[vals['name'] ] ~= nil then
+        if c[vals['name'] ] ~= nil and (os.time() - vals['not']) > notifLock then
         
             data = ds[vals['name'] ]:split(';')
 
@@ -48,24 +49,28 @@ if triggerDevice then
             if tonumber(data[2]) < vals['min'] and vals['trigger'] ~= -1 then
         
                 plants[plant]['trigger'] = -1
+                plants[plant]['not'] = os.time()
                 commandArray['SendNotification'] = 'Plants#'..vals['name']..' heeft water nodig'
         
             -- lower than min2, demand water
             elseif tonumber(data[2]) < vals['min2'] and vals['trigger'] ~= -2 then
                 
                 plants[plant]['trigger'] = -2
+                plants[plant]['not'] = os.time()
                 commandArray['SendNotification'] = 'Plants#'..vals['name']..' heeft water nodig (critic)'
         
             -- higher than max, request dryness
             elseif tonumber(data[2]) > vals['max'] and vals['trigger'] ~= 1 then
         
                 plants[plant]['trigger'] = 1
+                plants[plant]['not'] = os.time()
                 commandArray['SendNotification'] = 'Plants#'..vals['name']..' heeft teveel water'
               
             -- normal value, notify
             elseif tonumber(data[2]) >= vals['min'] and tonumber(data[2]) <= vals['max'] and vals['trigger'] ~= 0 then
         
                 plants[plant]['trigger'] = 0
+                plants[plant]['not'] = os.time()
                 commandArray['SendNotification'] = 'Plants#vochtigheid '..vals['name']..' weer juist.'
         
             end
@@ -90,7 +95,8 @@ local default_item = {
     min = 50,
     min2 = 30,
     name = nil,
-    trigger = 0
+    trigger = 0,
+    not = 1282888
 }
 
 --]]    
