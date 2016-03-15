@@ -51,6 +51,14 @@ function string:split(sep)
 
 end
 
+function join(tbl, glue)
+
+  local glue, str = glue or ":", ""
+  str = table.concat(tbl, glue)
+  return str
+
+end
+
 -- floor or ceil depending on first decimal
 function round(x)
   x = tonumber(x)
