@@ -23,7 +23,12 @@ heater_reset = 5                -- time of new temperature check in minutes afte
 
 ThermTemp = ds['Thermostaat']
 WK = ds['Woonkamer']:split(';')
+Ehv = ds['Eindhoven']:split(';')
 local difference = time_difference(dl['Woonkamer'])
+
+if tonumber(Ehv[1]) > 18.5 then
+    thermostate_high = 18.0
+end
 
 
 -- thermostate change when day / night changes
