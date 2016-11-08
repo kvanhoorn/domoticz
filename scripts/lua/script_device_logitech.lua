@@ -20,8 +20,10 @@ if c['Logitech'] ~= nil then
         commandArray['TV Vodafone'] = 'On'
     elseif v == 'Plex' then
         commandArray['Plex'] = 'On'
-    elseif v == 'Chromec.' then
+    elseif v == 'Chr.' then
         commandArray['Chromecast'] = 'On'
+    elseif v == 'LP' then
+    	commandArray['Turntable'] = 'On'
     elseif v == 'Music' then
         commandArray['ATV Music'] = 'On'
     end
