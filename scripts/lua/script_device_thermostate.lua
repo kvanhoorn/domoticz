@@ -30,6 +30,10 @@ if tonumber(Ehv[1]) > 18.5 then
     thermostate_high = 18.0
 end
 
+if tonumber(Ehv[1]) < 11.0 then
+    thermostate_high = 20.0
+end
+
 
 -- thermostate change when day / night changes
 if c['Nacht'] ~= nil then
