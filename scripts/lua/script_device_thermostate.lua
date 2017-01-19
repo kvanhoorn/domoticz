@@ -70,12 +70,18 @@ if c['IemandThuis'] ~= nil then
     if tonumber(ds['AantalThuis']) == 0 then
 
 		commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_low)
+		if d['Woonkamer - volledig'] == "On" and d['WK - Schemerlamp'] == "On" then
+    		commandArray['WK - Schemerlamp'] = "Off"
+        end
 
     elseif tonumber(ds['AantalThuis']) > 0 then
 
         if d['Nacht'] == "Off" then
 
 			commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_high)
+    		if d['Woonkamer - volledig'] == "On" and d['WK - Schemerlamp'] == "Off" then
+        		commandArray['WK - Schemerlamp'] = "On"
+            end
 
         elseif d['Nacht'] == "On" then
 

@@ -43,4 +43,20 @@ if d['Weekend'] == "Off" and d['Vakantie'] == "Off" then
 
 end
 
+if t['SunsetInMinutes'] < (1 + 30) and t['SunsetInMinutes'] > (30) then
+    
+    commandArray['Woonkamer - volledig'] = "On"
+
+    if tonumber(d['AantalThuis']) > 0 then
+        commandArray['WK - Schemerlamp'] = "On"
+    end
+    
+end
+
+if hours == 23 and minutes == 30 then
+    
+    commandArray['Woonkamer - volledig'] = "Off"
+    
+end
+
 return commandArray
