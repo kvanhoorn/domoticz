@@ -26,8 +26,10 @@ if d['Weekend'] == "On" or d['Vakantie'] == "On" then
 
     -- sets nightmode in weekends
     if hours == 23 and minutes == 30 and d['Nacht'] == "Off" then
-
-        commandArray['Nacht'] = "On"
+        
+        if d['Party'] == "Off" then
+            commandArray['Nacht'] = "On"
+        end
 
     -- unsets nightmode in weekends
     elseif hours == 8 and minutes == 30 and d['Nacht'] == "On" then
@@ -44,7 +46,9 @@ if d['Weekend'] == "Off" and d['Vakantie'] == "Off" then
     -- sets nightmode in weekends
     if hours == 22 and minutes == 30 and d['Nacht'] == "Off" then
 
-        commandArray['Nacht'] = "On"
+        if d['Party'] == "Off" then
+            commandArray['Nacht'] = "On"
+        end
 
     -- unsets nightmode in weekends
     elseif hours == 6 and minutes == 30 and d['Nacht'] == "On" then

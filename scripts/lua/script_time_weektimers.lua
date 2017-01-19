@@ -53,7 +53,7 @@ if t['SunsetInMinutes'] < (1 + 30) and t['SunsetInMinutes'] > (30) then
     
 end
 
-if hours == 23 and minutes == 30 then
+if hours == 23 and minutes == 30 and d['Party'] == "Off" then
     
     commandArray['Woonkamer - volledig'] = "Off"
     

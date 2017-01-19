@@ -63,6 +63,17 @@ elseif c['Nacht'] == "Off" then
 
 end
 
+-- when partymode is changed, send notifications
+if c['Party'] == "On" then
+    
+    commandArray['SendNotification'] = 'Party#Partymodus is aan. Lichten, CV-Ketel en nachtalarm wijzigen niet langer automatisch.#0#bugle';
+    
+elseif c['Party'] == "Off" then
+    
+    commandArray['SendNotification'] = 'Party#Partymodus is uit. Alles werkt weer volgens normale schema.#0#bugle'
+    
+end
+
 
 -- off button living room sets off all other devices such as lights and TV
 if c['Woonkamer - volledig'] == "Off" then
