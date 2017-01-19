@@ -20,6 +20,7 @@ thermostate_idx = '88'          -- idx of thermostate (temperature device)
 heater_on_min = 10              -- time heater should be minimum on in minutes
 heater_on_max = 45              -- time heater should be maximum on in minutes
 heater_reset = 5                -- time of new temperature check in minutes after turning off
+max_liv_temp = 22.0             -- maximum temperature living should ever be
 
 ThermTemp = ds['Thermostaat']
 WK = ds['Woonkamer']:split(';')
@@ -95,6 +96,14 @@ if d['CV Ketel'] == 'On' and time_difference(dl['CV Ketel']) > (60 * heater_on_m
 
     print('heater longer on than allowed, force shut down')
 
+end
+
+-- notification when living room hotter than 22 C
+if c['Woonkamer'] ~= nil and tonumber(WK[1]) > max_liv_temp then
+    
+    commandArray[9] = {['SendNotification'] = 'Thermostate#Woonkamer temperatuur > '..tostring(max_liv_temp)..'. '..
+        'Er is iets mis met de Raspberry Pi of ketel!#2#Siren'}
+    
 end
 
 
