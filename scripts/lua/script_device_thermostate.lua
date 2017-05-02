@@ -15,7 +15,7 @@ sensor_age_critical = 2400      -- seconds for second warning about batteries, t
 
 thermostate_high = 19.5         -- temperature when home and day
 thermostate_low = 17.5          -- temperature when away or asleep
-thermostate_idx = '88'          -- idx of thermostate (temperature device)
+thermostate_idx = '304'          -- idx of thermostate (temperature device)
 
 heater_on_min = 10              -- time heater should be minimum on in minutes
 heater_on_max = 45              -- time heater should be maximum on in minutes
@@ -41,7 +41,8 @@ if c['Nacht'] ~= nil then
 
     if c['Nacht'] == "On" then
 
-        commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_low)
+        --commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_low)
+	commandArray['SetSetPoint:'..thermostate_idx] = tostring(thermostate_low)
 
     elseif c['Nacht'] == "Off" then
 
@@ -50,12 +51,14 @@ if c['Nacht'] ~= nil then
             -- if weekly and after 8 or weekend continue with high settings
 
             if (d['Weekend'] == "Off" and hours >= 8) or (d['Weekend'] == "On") then
-                commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_high)
+                --commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_high)
+		commandArray['SetSetPoint:'..thermostate_idx] = tostring(thermostate_high)
             end
 
         elseif tonumber(ds['AantalThuis']) == 0 then
 
-            commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_low)
+            --commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_low)
+	    commandArray['SetSetPoint:'..thermostate_idx] = tostring(thermostate_low)
 
         end
 
@@ -69,7 +72,8 @@ if c['IemandThuis'] ~= nil then
 
     if tonumber(ds['AantalThuis']) == 0 then
 
-		commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_low)
+		--commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_low)
+		commandArray['SetSetPoint:'..thermostate_idx] = tostring(thermostate_low)
 		if d['Woonkamer - volledig'] == "On" and d['WK - Schemerlamp'] == "On" then
     		commandArray['WK - Schemerlamp'] = "Off"
         end
@@ -78,14 +82,16 @@ if c['IemandThuis'] ~= nil then
 
         if d['Nacht'] == "Off" then
 
-			commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_high)
+			--commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_high)
+			commandArray['SetSetPoint:'..thermostate_idx] = tostring(thermostate_high)
     		if d['Woonkamer - volledig'] == "On" and d['WK - Schemerlamp'] == "Off" then
         		commandArray['WK - Schemerlamp'] = "On"
             end
 
         elseif d['Nacht'] == "On" then
 
-			commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_low)
+			--commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(thermostate_low)
+			commandArray['SetSetPoint:'..thermostate_idx] = tostring(thermostate_low)
 
         end
 
@@ -105,18 +111,25 @@ if d['CV Ketel'] == 'On' and time_difference(dl['CV Ketel']) > (60 * heater_on_m
 end
 
 -- notification when living room hotter than 22 C
-if c['Woonkamer'] ~= nil and tonumber(WK[1]) > max_liv_temp then
+if c['Woonkamer'] ~= nil and u['TempWkWarning'] == 0 and tonumber(WK[1]) > max_liv_temp then
     
     commandArray[9] = {['SendNotification'] = 'Thermostate#Woonkamer temperatuur > '..tostring(max_liv_temp)..'. '..
-        'Er is iets mis met de Raspberry Pi of ketel!#2#Siren'}
+         'Er is iets mis met de Raspberry Pi of ketel!#2#Siren'}
+    commandArray['Variable:TempWkWarning'] = '1'
     
 end
 
+-- reset TempWkWarning after 2h
+lastChangeDiff = time_difference(ul['TempWkWarning'])
+if u['TempWkWarning'] == 1 and lastChangeDiff > (60 * 60 * 2) then
+    commandArray['Variable:TempWkWarning'] = '0'
+end
 
 -- temperature shortcuts
 if c['Zet thermostaat'] ~= nil and c['Zet thermostaat'] ~= 'Off' then
 
-	commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(tonumber(c['Zet thermostaat']))
+    --commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(tonumber(c['Zet thermostaat']))
+    commandArray['SetSetPoint:'..thermostate_idx] = tostring(tonumber(c['Zet thermostaat']))
     commandArray['Zet thermostaat'] = 'Off'
 
 end
@@ -176,12 +189,14 @@ end
 
 if (c['Hotter'] == 'On') then
     newval = tostring(ds['Thermostaat'] + .5)		-- add a half degree
-    commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(newval)
+    --commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(newval)
+    commandArray['SetSetPoint:'..thermostate_idx] = tostring(newval)
 end
 
 if (c['Colder'] == 'On') then
     newval = tostring(ds['Thermostaat'] - .5)		-- subtract a half degree
-    commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(newval)
+    --commandArray['UpdateDevice'] = thermostate_idx..'|0|'..tostring(newval)
+    commandArray['SetSetPoint:'..thermostate_idx] = tostring(newval)
 end
 
 -- debug information
@@ -190,4 +205,4 @@ if next(commandArray) ~= nil then
 	vardump(commandArray)
 end
 
-return commandArray
+return overrideReturnCommandArray(commandArray)

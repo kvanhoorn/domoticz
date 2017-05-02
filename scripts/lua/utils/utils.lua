@@ -77,3 +77,26 @@ function round(x)
   x = tonumber(x)
   return x >= 0 and math.floor(x+.5) or math.ceil(x-.5)
 end
+
+-- function to override keys in commandArray that are not supported
+function overrideReturnCommandArray(inp)
+
+  for k,v in pairs(inp) do
+
+    -- SetSetPoint is still in beta, this does the same thing
+    -- not using UpdateDevice, because script will get timeout (known bug in version)
+    matchStr = k:match("SetSetPoint:([0-9]+)")
+
+    if matchStr ~= nil then
+
+      print('override SetSetPoint function')
+      url = dom_api .. 'type=command&param=udevice&idx=' .. matchStr .. '&nvalue=0&svalue=' .. v
+      inp['OpenURL'] = url
+
+    end
+
+  end
+
+  return inp
+
+end
